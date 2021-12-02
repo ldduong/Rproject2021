@@ -46,7 +46,7 @@ allDataFunction<-function(){
 AllDataNA<-function(){
 allData<-read.csv("allData.csv")
 allData[allData==0]<-NA
-NAsChoice<-readline(prompt="Remove rows with NAs? Type Y or N. ")
+NAsChoice<-readline(prompt="Remove rows with any NAs? Type Y or N. ")
 if(NAsChoice=="N"){
   cat(paste("Rows with NAs have been preserved. See allData.csv."))
 }else{
@@ -60,7 +60,21 @@ if(NAsChoice=="N"){
 ##distribution of patients.
 summary<-function(){
   allData<-read.csv("allData.csv")
-  numScreens<-nrow(allData)-1
-  percentInfected<-x
-  
+  numScreens<-nrow(allData)
+  positiveCasesOnly<-allData[rowSums(is.na(allData[,3:12]))!=10,]
+  positiveCases<-nrow(positiveCasesOnly)
+  percentInfected<-round((positiveCases/numScreens*100), digits=2)
+  cat(paste("Total number of screens:"), numScreens)
+  cat(paste("Percent positive cases:"), percentInfected, "%")
+  MalePts<-sum(allData$gender=="male")
+  FemalePts<-sum(allData$gender=="female")
+  cat(paste("Number of Male Patients Screened:"), MalePts)
+  cat(paste("Number of Female Patients Screened:"), FemalePts)
+  library(ggplot2)
+  ageDistribution<-ggplot(allData,aes(x=age))+
+    geom_bar()+
+    xlim(0,125)+
+    ylab("Number of patients")
+  ageDistribution
 }
+summary()
