@@ -30,11 +30,37 @@ CompileCSVFunction<-function(dirToCompile){
     initDataFrame<-rbind(initDataFrame,readIn)
     write.csv(initDataFrame,
               file=paste(dirToCompile,
-                         paste(dirToCompile, "compiled.csv"), sep="/"), row.names = FALSE)
+                         paste(dirToCompile,"compiled.csv"), sep="/"), row.names = FALSE)
   }
 }
-#
-
+#Code to compile the compiled data from country's x and y into a single file, allData.csv
+allDataFunction<-function(){
+  X<-read.csv("countryX/countryX compiled.csv")
+  Y<-read.csv("countryY/countryY compiled.csv")
+  allData<-rbind(X, Y)
+  write.csv(allData, file="allData.csv", row.names = FALSE)
+}
+#Allow the user to choose whether they want to remove rows with NA's in any
+#columns, include NAs in compiled data, but be warned of their presence, or
+#include NAs in compiled data without a warning
+AllDataNA<-function(){
+allData<-read.csv("allData.csv")
+allData[allData==0]<-NA
+NAsChoice<-readline(prompt="Remove rows with NAs? Type Y or N. ")
+if(NAsChoice=="N"){
+  cat(paste("Rows with NAs have been preserved. See allData.csv."))
+}else{
+  allData_omit<-na.omit(allData)
+  write.csv(allData_omit, file="allData_omit.csv", row.names=FALSE)
+  cat(paste("Rows with NAs have been omitted. See allData_omit.csv."))
+  }
+}
 ##Summarize the compiled data set in terms of number of screens run, percent of
 ##patients screened that were infected, M vs F patients, and the age
 ##distribution of patients.
+summary<-function(){
+  allData<-read.csv("allData.csv")
+  numScreens<-nrow(allData)-1
+  percentInfected<-x
+  
+}
