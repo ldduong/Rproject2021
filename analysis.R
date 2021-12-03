@@ -16,10 +16,6 @@ allDataFunction()
 ##Process the data
 summary()
 
-##Answer the questions
-cat("Question 1. In what country did the outbreak likely begin?")
-cat("\n")
-cat("The disease likely began in Country X. Plotting positive tests over time shows that it first appeared in Country X on day 120, and steadily grew while it didn't appear until day 139 in Country Y.")
-cat("\n")
-cat("This is visualized in Figure 1.")
-XvYPlot()
+##Answer the questions.
+Question1()
+Question2()

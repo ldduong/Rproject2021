@@ -102,18 +102,45 @@ summary<-function(){
   ageDistribution
 }
 
-##Extra functions. XvYPlot plots the number of positive screens over time. For Q1. 
+##Extra functions. XvYPlot plots the number of positive screens over time. For
+##Q1.
 XvYPlot<-function(){
   XHist<-hist(XPos$day, breaks=20)
   XHist
   YHist<-hist(YPos$day, breaks=20)
   YHist
   plot(XHist, col=rgb(0,0,1, 1/4),
-       main="Number of Positive Cases in Countries X and Y over Time",
+       main="Figure 1. Number of Positive Cases in Countries X and Y over Time",
        xlab="Screening Day", ylab="Positive Tests",
        breaks=20)
   plot(YHist, col=rgb(1,0,0, 1/4),add=T)
   legend(x="topleft", 
          legend=c("Country X", "Country Y"),
          fill=c(rgb(0,0,1, 1/4), rgb(1,0,0, 1/4)), border="black")
+}
+#For q2. Markers profile. 
+MarkerProfile<-function(){
+  XMarkers<-colSums(XPos[3:12], na.rm=TRUE)
+  YMarkers<-colSums(YPos[3:12], na.rm=TRUE)
+  plot(XMarkers, main="Figure 2. Marker Profiles", col="blue", xlab="Marker", ylab="Count")
+  axis(1, at=1:10, labels=c(1:10))
+  lines(YMarkers, col="red", type = "p")
+}
+
+#Analysis text
+Question1<-function(){
+  cat("Question 1. In what country did the outbreak likely begin?")
+  cat("\n")
+  cat("The disease likely began in Country X. Plotting positive tests over time shows that it first appeared in Country X on day 120, and steadily grew while it didn't appear until day 139 in Country Y.")
+  cat("\n")
+  cat("This is visualized in Figure 1.")
+  XvYPlot()
+}
+Question2<-function(){
+  cat("Question 2. If Country Y develops a vaccine for the disease, is it likely to work for country X?")
+  cat("\n")
+  cat("It will likely NOT work. While Country Y's positive tests mostly resulted in positive hits for markers 6-10, Country X's positive tests were mostly hits on Markers 1-5.")
+  cat("\n")
+  cat("This is visualized in Figure 2.")
+  MarkerProfile()
 }
