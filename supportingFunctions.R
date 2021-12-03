@@ -65,16 +65,35 @@ summary<-function(){
   positiveCases<-nrow(positiveCasesOnly)
   percentInfected<-round((positiveCases/numScreens*100), digits=2)
   cat(paste("Total number of screens:"), numScreens)
+  cat("\n")
   cat(paste("Percent positive cases:"), percentInfected, "%")
+  cat("\n")
   MalePts<-sum(allData$gender=="male")
   FemalePts<-sum(allData$gender=="female")
   cat(paste("Number of Male Patients Screened:"), MalePts)
+  cat("\n")
   cat(paste("Number of Female Patients Screened:"), FemalePts)
+  cat("\n")
+  options(warn=-1)
   library(ggplot2)
-  ageDistribution<-ggplot(allData,aes(x=age))+
-    geom_bar()+
-    xlim(0,125)+
-    ylab("Number of patients")
-  ageDistribution
+  ageDistribution1<-ggplot(allData,aes(x=age))+
+    geom_histogram(bins=15, binwidth = 3, color="blue", fill="white")+
+    ggtitle("Age Distribution of Screened Patients",)+
+    ylab("Number of patients")+
+    scale_x_continuous(breaks=seq(0,120,10), limits=c(0,120))+
+    theme_classic()+
+    theme(plot.title = element_text(hjust = 0.5))
+  ageDistribution2<-ggplot(positiveCasesOnly,aes(x=age))+
+    geom_histogram(bins=15, binwidth = 3, color="red", fill="white")+
+    ggtitle("Age Distribution of Patients Tested Positive",)+
+    ylab("Number of patients")+
+    scale_x_continuous(breaks=seq(0,120,10), limits=c(0,120))+
+    theme_classic()+
+    theme(plot.title = element_text(hjust = 0.5))
+  library(cowplot)
+  ageDistribution<-plot_grid(ageDistribution1, ageDistribution2,
+                             rel_widths = c(1, 0.85),
+                             ncol = 2,
+                             nrow = 1)
 }
 summary()
