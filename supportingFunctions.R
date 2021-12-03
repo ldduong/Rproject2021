@@ -60,13 +60,17 @@ if(NAsChoice=="N"){
 ##distribution of patients.
 summary<-function(){
   allData<-read.csv("allData.csv")
+  allData[allData==0]<-NA
   numScreens<-nrow(allData)
   positiveCasesOnly<-allData[rowSums(is.na(allData[,3:12]))!=10,]
   positiveCases<-nrow(positiveCasesOnly)
-  percentInfected<-round((positiveCases/numScreens*100), digits=2)
+  cat("Here is a brief summary of the screening data.")
+  cat("\n")
   cat(paste("Total number of screens:"), numScreens)
   cat("\n")
-  cat(paste("Percent positive cases:"), percentInfected, "%")
+  InfectRatio<-positiveCases/numScreens
+  InfectPercent<-round(InfectRatio*100, digits=2)
+  cat(paste("Percent positive cases:", InfectPercent, "%", sep=" "))
   cat("\n")
   MalePts<-sum(allData$gender=="male")
   FemalePts<-sum(allData$gender=="female")
@@ -95,5 +99,21 @@ summary<-function(){
                              rel_widths = c(1, 0.85),
                              ncol = 2,
                              nrow = 1)
+  ageDistribution
 }
-summary()
+
+##Extra functions. XvYPlot plots the number of positive screens over time. For Q1. 
+XvYPlot<-function(){
+  XHist<-hist(XPos$day, breaks=20)
+  XHist
+  YHist<-hist(YPos$day, breaks=20)
+  YHist
+  plot(XHist, col=rgb(0,0,1, 1/4),
+       main="Number of Positive Cases in Countries X and Y over Time",
+       xlab="Screening Day", ylab="Positive Tests",
+       breaks=20)
+  plot(YHist, col=rgb(1,0,0, 1/4),add=T)
+  legend(x="topleft", 
+         legend=c("Country X", "Country Y"),
+         fill=c(rgb(0,0,1, 1/4), rgb(1,0,0, 1/4)), border="black")
+}
